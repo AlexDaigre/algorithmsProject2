@@ -91,6 +91,10 @@ class App extends Component {
   render() {
     return (
       <div style={{height:"100vh"}} className="App">
+        <h1>Algorithms Project 2: Create Trees</h1>
+        <br />
+        <p> Trees are generated interactively. Click and drag to move them. Click nodes to expand or colapse them. Scroll to zoom.</p>
+        <br />
         <input value={this.state.nodeInput} placeholder="Number of Nodes" type="text" onInput={this.handleNodesInput}/>
         <button onClick ={this.handleGenerateTreeClick}>Generate Binary Tree</button>
         <button onClick ={this.handleGenerateSearchTreeClick}>Transform into Binary Search Tree</button>
