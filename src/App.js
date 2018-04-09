@@ -4,16 +4,16 @@ import {createRandomArray} from './HelperFunctions'
 import CenteredTree from './CenteredTree';
 import './App.css';
 import {BinarySearchTree} from './BinarySearchTree'
+import {BinaryTree} from './BinaryTree'
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
       input: [],
-      binarySearchTree: {},
       binaryTree: {},
-      currentTraversal: 'pre-order: null',
-      traversalType: "pre-order",
+      currentTraversal: 'Not yet generated.',
+      traversalType: '',
       currentTree:[
         {
           name: 'Empty Tree',
@@ -30,20 +30,35 @@ class App extends Component {
     newInputArray.forEach(element => newTreeObject.insert(element));
     const newTree = newTreeObject.getTree();
     this.setState({
-      binarySearchTree: newTreeObject,
+      binaryTree: newTreeObject,
       currentTree: [newTree],
       nodeInput: '',
       input: newInputArray,
     });
   }
 
-  handleGenerateTreeClick = () =>{
+  handleGenerateSearchTreeClick = () =>{
     const newTreeObject = new BinarySearchTree();
+    this.state.input.forEach(element => newTreeObject.insert(element));
+    const newTree = newTreeObject.getTree();
+    this.setState({
+      binaryTree: newTreeObject,
+      currentTree: [newTree],
+      nodeInput: '',
+    });
+  }
+
+  handleGenerateTreeClick = () =>{
+    if(this.state.nodeInput > 250 || this.state.nodeInput < 0 || isNaN(this.state.nodeInput)){
+      alert("Please enter a number between 0 and 500");
+      return;
+    }
+    const newTreeObject = new BinaryTree();
     const newInputArray = createRandomArray(this.state.nodeInput);
     newInputArray.forEach(element => newTreeObject.insert(element));
     const newTree = newTreeObject.getTree();
     this.setState({
-      binarySearchTree: newTreeObject,
+      binaryTree: newTreeObject,
       currentTree: [newTree],
       nodeInput: '',
       input: newInputArray,
@@ -63,7 +78,11 @@ class App extends Component {
   }
 
   handleTraversalClick = event => {
-    const newTraversal = this.state.binarySearchTree.newTraverse(this.state.traversalType);
+    if(!this.state.traversalType){
+      alert("Please select a traversal type");
+      return;
+    }
+    const newTraversal = this.state.binaryTree.newTraverse(this.state.traversalType);
     this.setState({
       currentTraversal: this.state.traversalType + ": " + newTraversal,
     });
@@ -73,7 +92,8 @@ class App extends Component {
     return (
       <div style={{height:"100vh"}} className="App">
         <input value={this.state.nodeInput} placeholder="Number of Nodes" type="text" onInput={this.handleNodesInput}/>
-        <button onClick ={this.handleGenerateTreeClick}>Generate Binary Search Tree</button>
+        <button onClick ={this.handleGenerateTreeClick}>Generate Binary Tree</button>
+        <button onClick ={this.handleGenerateSearchTreeClick}>Transform into Binary Search Tree</button>
         <br />
         <label> pre-order:</label>
         <input type="radio" name="traversalType" value="pre-order" onChange={this.handleOrderChange} />
@@ -83,6 +103,7 @@ class App extends Component {
         <input type="radio" name="traversalType" value="post-order" onChange={this.handleOrderChange} />
         <button onClick={this.handleTraversalClick}>Generate Traversal</button>
         <br />
+        <label>Traversal: </label>
         <span>{this.state.currentTraversal}</span>
         <br />
         <CenteredTree data={this.state.currentTree} />
