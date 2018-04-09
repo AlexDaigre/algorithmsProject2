@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Tree from 'react-d3-tree';
+import CenteredTree from './CenteredTree';
 import './App.css';
 import {BinarySearchTree} from './BinarySearchTree2'
 
@@ -14,16 +15,8 @@ class App extends Component {
       traversalType: "pre-order",
       currentTree:[
         {
-          name: 'Top Level',
-          children: [
-            {
-              name: 'Level 2: A',
-              children: [{},{}],
-            },
-            {
-              name: 'Level 2: B',
-            },
-          ],
+          name: 'Empty Tree',
+          children: [{}, {}]
         },
       ],
     }
@@ -43,9 +36,9 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div style={{height:"100vh"}} className="App">
         <button onClick ={this.testTree}>Test Tree</button>
-        <Tree data={this.state.currentTree} />
+        <CenteredTree data={this.state.currentTree} />
       </div>
     );
   }
